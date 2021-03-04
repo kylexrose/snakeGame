@@ -23,27 +23,39 @@ for(let i = 0; i < snake.length; i++){
 }
 
 document.addEventListener("keydown", (e)=>{
-    direction = e.key;
+    if(direction !== "ArrowUp" && e.key === "ArrowDown"){
+        direction = e.key;
+    }else if(direction !== "ArrowRight" && e.key === "ArrowLeft"){
+        direction = e.key;
+    }else if(direction !== "ArrowDown" && e.key === "ArrowUp"){
+        direction = e.key;
+    }else if(direction !== "ArrowLeft" && e.key === "ArrowRight"){
+        direction = e.key;
+    }
    })
 
-//setInterval(updateSnake, 200);
+//let engine = setInterval(updateSnake, 200);
 //updateSnake();
 function updateSnake(){
     if (direction === "ArrowRight"){
         snakePop();
-        snake.unshift([snake[0][0], snake[0][1] + 1]);console.log(snake[0])
+        snake.unshift([snake[0][0], snake[0][1] + 1]);
+        checkForGameOver();
         addLeadClass();
     }else if (direction === "ArrowDown"){
         snakePop();
-        snake.unshift([snake[0][0] + 1, snake[0][1]])
+        snake.unshift([snake[0][0] + 1, snake[0][1]]);
+        checkForGameOver();
         addLeadClass();
     }else if (direction === "ArrowLeft"){
         snakePop();
-        snake.unshift([snake[0][0], snake[0][1] - 1])
+        snake.unshift([snake[0][0], snake[0][1] - 1]);
+        checkForGameOver();
         addLeadClass();
     }else if (direction === "ArrowUp"){
         snakePop();
-        snake.unshift([snake[0][0] - 1, snake[0][1]])
+        snake.unshift([snake[0][0] - 1, snake[0][1]]);
+        checkForGameOver();
         addLeadClass();
     }
     removeDot();
@@ -59,7 +71,14 @@ function snakePop(){
         document.getElementById("cell[" + remove[0] + ", " + remove[1] + "]").classList.remove("snake");
     }
 }
-
+/*
+function checkForGameOver(){
+    console.log(snake[0], snake)
+    if (snake.indexOf(snake[0], 1) !== -1){
+        console.log("no");
+    }
+}
+*/
 //------------------------------------------------------------------------------------------------------------------
 
 function dotPlacer(){

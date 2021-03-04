@@ -22,6 +22,14 @@
     background-color: darkslategray;
 }
 
+.gameOver {
+    background-color: rgb(236, 93, 77);
+}
+
 .dot {
     background-color: darkslategray;
+}
+
+h1 {
+    text-align: center;
 }

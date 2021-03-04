@@ -13,16 +13,19 @@ document.getElementById("grid").innerHTML = grid;
 //-----------------------------------------------------------------------------------------------------------------
 
 let direction = "ArrowRight";
-let snake = [[20, 10], [20, 9], [20, 8]];
+let snake;
 let snakeLength = 3;
 let currentDot;
-dotPlacer();
+let started = false;
+let engine;
+let lastDirection;
 
-for(let i = 0; i < snake.length; i++){
-    document.getElementById("cell[" + snake[i][0] + ", " + snake[i][1] + "]").classList.add("snake");
-}
 
-    document.addEventListener("keydown", (e)=>{
+
+document.addEventListener("keydown", (e)=>{
+    if(!started && e.key === " "){
+        init();
+    }
     if(direction !== "ArrowUp" && e.key === "ArrowDown"){
         direction = e.key;
     }else if(direction !== "ArrowRight" && e.key === "ArrowLeft"){
@@ -34,29 +37,46 @@ for(let i = 0; i < snake.length; i++){
     }
    })
 
-let engine = setInterval(updateSnake, 200);
+function init(){
+    if(snake !== undefined){
+    removeSnake();
+    }
+    snake = [[10, 10], [10, 9], [10, 8]];    
+    colorSnake("snake");
+    if (currentDot !== undefined){
+        removeDot();
+    }else{
+        dotPlacer();
+    }
+    engine = setInterval(updateSnake, 200);
+    started = true;
+}
 //updateSnake();
 function updateSnake(){
     if (direction === "ArrowRight"){
         snakePop();
         snake.unshift([snake[0][0], snake[0][1] + 1]);
-        checkForGameOver();
-        addLeadClass();
+        if (!(checkForGameOver())){
+            addLeadClass();
+        }
     }else if (direction === "ArrowDown"){
         snakePop();
         snake.unshift([snake[0][0] + 1, snake[0][1]]);
-        checkForGameOver();
-        addLeadClass();
+        if (!(checkForGameOver())){
+            addLeadClass();
+        }
     }else if (direction === "ArrowLeft"){
         snakePop();
         snake.unshift([snake[0][0], snake[0][1] - 1]);
-        checkForGameOver();
-        addLeadClass();
+        if (!(checkForGameOver())){
+            addLeadClass();
+        }
     }else if (direction === "ArrowUp"){
         snakePop();
         snake.unshift([snake[0][0] - 1, snake[0][1]]);
-        checkForGameOver();
-        addLeadClass();
+        if (!(checkForGameOver())){
+            addLeadClass();
+        }
     }
     removeDot();
 }
@@ -66,7 +86,7 @@ function addLeadClass(){
 }
 
 function snakePop(){
-    if (snake.length > snakeLength){
+    if (snake.length >= snakeLength){
         let remove = snake.pop()
         document.getElementById("cell[" + remove[0] + ", " + remove[1] + "]").classList.remove("snake");
     }
@@ -74,23 +94,55 @@ function snakePop(){
 
 function checkForGameOver(){
     let array = snake.map((x)=> x );
-    array.shift();//console.log(array, snake)
+    array.shift();
     if (snake[0][0] >= height + 1 || snake[0][0] <= 0 || snake[0][1] >= width + 1 || snake[0][1] <= 0){
         clearInterval(engine);
+        snakeGameOver();
+        started = false;
+        return true;
     }
     if (JSON.stringify(array).includes(JSON.stringify(snake[0]))){
-        console.log("no");
         clearInterval(engine);
+        snakeGameOver();
+        started = false;
+        return true;
+    }
+}
+
+function colorSnake(className){
+    for(let i = snake.length - 1; i >= 0; i--){
+        document.getElementById("cell[" + snake[i][0] + ", " + snake[i][1] + "]").classList.add(className);
+    }
+}
+
+function snakeGameOver(){
+    for(let i = snake.length - 1; i >= 1; i--){
+        let snakeSection = document.getElementById("cell[" + snake[i][0] + ", " + snake[i][1] + "]");
+        snakeSection.classList.add("gameOver");
+    }
+}
+
+function removeSnake(){
+    for(let i = snake.length - 1; i >= 0; i--){
+        let snakeSection = document.getElementById("cell[" + snake[i][0] + ", " + snake[i][1] + "]");
+        if (snakeSection !== null){
+                snakeSection.classList.remove("gameOver");
+                snakeSection.classList.remove("snake");
+        }
     }
 }
 
 //------------------------------------------------------------------------------------------------------------------
 
 function dotPlacer(){
-let dotRow = getRandomInt(1, height+1)
-let dotColumn = getRandomInt(1, width+1)
-currentDot = [dotRow, dotColumn];
-document.getElementById("cell[" + dotRow + ", " + dotColumn + "]").classList.add("dot");
+    let dotRow = getRandomInt(1, height+1)
+    let dotColumn = getRandomInt(1, width+1)
+    currentDot = [dotRow, dotColumn];
+    if (document.getElementById("cell[" + dotRow + ", " + dotColumn + "]").classList.contains("snake")){
+        dotPlacer();
+    }else{
+        document.getElementById("cell[" + dotRow + ", " + dotColumn + "]").classList.add("dot");
+    }
 }
 
 function removeDot(){

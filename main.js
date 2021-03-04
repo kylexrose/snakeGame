@@ -18,7 +18,8 @@ let snakeLength;
 let currentDot;
 let started = false;
 let engine;
-
+let speed = 200;
+let difficulty = .98;
 
 
 document.addEventListener("keydown", (e)=>{
@@ -133,6 +134,12 @@ function removeSnake(){
     }
 }
 
+function speedUp(difficulty){
+    speed *= difficulty;
+    clearInterval(engine);
+    engine = setInterval(updateSnake, speed);
+}
+
 //------------------------------------------------------------------------------------------------------------------
 
 function dotPlacer(){
@@ -150,6 +157,7 @@ function removeDot(){
     if(currentDot[0] === snake[0][0] && currentDot[1] === snake[0][1]){
         snakeLength++;
         document.getElementById("cell[" + currentDot[0] + ", " + currentDot[1] + "]").classList.remove("dot");
+        speedUp(difficulty);
         dotPlacer();
     }
 }

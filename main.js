@@ -12,13 +12,12 @@ document.getElementById("grid").innerHTML = grid;
 
 //-----------------------------------------------------------------------------------------------------------------
 
-let direction = "ArrowRight";
+let direction;
 let snake;
-let snakeLength = 3;
+let snakeLength;
 let currentDot;
 let started = false;
 let engine;
-let lastDirection;
 
 
 
@@ -38,10 +37,12 @@ document.addEventListener("keydown", (e)=>{
    })
 
 function init(){
+    direction = "ArrowRight";
     if(snake !== undefined){
     removeSnake();
     }
     snake = [[10, 10], [10, 9], [10, 8]];    
+    snakeLength = snake.length;
     colorSnake("snake");
     if (currentDot !== undefined){
         removeDot();

@@ -22,7 +22,7 @@ for(let i = 0; i < snake.length; i++){
     document.getElementById("cell[" + snake[i][0] + ", " + snake[i][1] + "]").classList.add("snake");
 }
 
-document.addEventListener("keydown", (e)=>{
+    document.addEventListener("keydown", (e)=>{
     if(direction !== "ArrowUp" && e.key === "ArrowDown"){
         direction = e.key;
     }else if(direction !== "ArrowRight" && e.key === "ArrowLeft"){
@@ -34,7 +34,7 @@ document.addEventListener("keydown", (e)=>{
     }
    })
 
-//let engine = setInterval(updateSnake, 200);
+let engine = setInterval(updateSnake, 200);
 //updateSnake();
 function updateSnake(){
     if (direction === "ArrowRight"){
@@ -71,14 +71,19 @@ function snakePop(){
         document.getElementById("cell[" + remove[0] + ", " + remove[1] + "]").classList.remove("snake");
     }
 }
-/*
+
 function checkForGameOver(){
-    console.log(snake[0], snake)
-    if (snake.indexOf(snake[0], 1) !== -1){
+    let array = snake.map((x)=> x );
+    array.shift();//console.log(array, snake)
+    if (snake[0][0] >= height + 1 || snake[0][0] <= 0 || snake[0][1] >= width + 1 || snake[0][1] <= 0){
+        clearInterval(engine);
+    }
+    if (JSON.stringify(array).includes(JSON.stringify(snake[0]))){
         console.log("no");
+        clearInterval(engine);
     }
 }
-*/
+
 //------------------------------------------------------------------------------------------------------------------
 
 function dotPlacer(){

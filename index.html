@@ -9,8 +9,16 @@
 </head>
 <body>
     <div id="grid"></div>
-    <h1>Press Space to start!</h1>
-    <h3 id="highScore">High Score: </h3>
+    <div id="bottom">
+        <h1>Press Space to start!</h1>
+        <h3 id="highScore">High Score: </h3>
+        <form>
+        <input type="radio" id="easy" name="difficulty" value="easy" checked="checked">
+        <label for="easy">Easy</label>
+        <input type="radio" id="hard" name="difficulty" value="hard">
+        <label for="hard">Hard</label>
+        </form>
+    </div>
 </body>
 <script src="main.js"></script>
 </html>

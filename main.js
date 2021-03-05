@@ -13,7 +13,7 @@ document.getElementById("grid").innerHTML = grid;
 document.getElementById("highScore").innerHTML = "High Score: " + highScore;
 
 //-----------------------------------------------------------------------------------------------------------------
-
+let difficultyHTML = document.getElementsByName("difficulty");
 let direction;
 let snake;
 let snakeLength;
@@ -26,6 +26,7 @@ let difficulty = .98;
 
 document.addEventListener("keydown", (e)=>{
     if(!started && e.key === " "){
+        checkDifficulty();
         init();
     }
     if(direction !== "ArrowUp" && e.key === "ArrowDown"){
@@ -177,3 +178,13 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
+
+function checkDifficulty(){
+    if (difficultyHTML[0].checked){
+        difficulty = .98;
+        speed = 250;
+    }else{
+        difficulty = .96;
+        speed = 200;
+    }
+}

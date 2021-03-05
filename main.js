@@ -1,4 +1,5 @@
 let grid = "";
+let highScore = 0;
 const width = 40;
 const height = 40;
 for (let row = 1; row <= height; row++){
@@ -9,6 +10,7 @@ for (let row = 1; row <= height; row++){
     grid += "</div>"
 }
 document.getElementById("grid").innerHTML = grid;
+document.getElementById("highScore").innerHTML = "High Score: " + highScore;
 
 //-----------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +52,8 @@ function init(){
     }else{
         dotPlacer();
     }
-    engine = setInterval(updateSnake, 200);
+    speed = 200;
+    engine = setInterval(updateSnake, speed);
     started = true;
 }
 //updateSnake();
@@ -123,6 +126,12 @@ function snakeGameOver(){
         snakeSection.classList.add("gameOver");
     }
 }
+function updateScore(){
+    if (snakeLength > highScore){
+        highScore = snakeLength;
+        document.getElementById("highScore").innerHTML = "High Score: " + highScore;
+    }
+}
 
 function removeSnake(){
     for(let i = snake.length - 1; i >= 0; i--){
@@ -134,7 +143,7 @@ function removeSnake(){
     }
 }
 
-function speedUp(difficulty){
+function speedUp(){
     speed *= difficulty;
     clearInterval(engine);
     engine = setInterval(updateSnake, speed);
@@ -157,7 +166,8 @@ function removeDot(){
     if(currentDot[0] === snake[0][0] && currentDot[1] === snake[0][1]){
         snakeLength++;
         document.getElementById("cell[" + currentDot[0] + ", " + currentDot[1] + "]").classList.remove("dot");
-        speedUp(difficulty);
+        updateScore();
+        speedUp();
         dotPlacer();
     }
 }

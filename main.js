@@ -13,6 +13,16 @@ for (let row = 1; row <= height; row++){
 document.getElementById("grid").innerHTML = grid;
 document.getElementById("highScore").innerHTML = "High Score: " + highScore;
 document.getElementById("currentScore").innerHTML = "Current Score: " + currentScore;
+
+function boxSize(size){
+    let cells = document.getElementsByClassName("cell");
+    for (let i = 0; i < cells.length; i++){
+        cells[i].style.height = size + "px";
+        cells[i].style.width = size + "px";
+    }
+}
+
+boxSize(14);
 //-----------------------------------------------------------------------------------------------------------------
 let difficultyHTML = document.getElementsByName("difficulty");
 let direction;

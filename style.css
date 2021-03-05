@@ -3,7 +3,7 @@
     height: 10px;
     width: 10px;
     margin: 0px;
-}
+} 
 
 #grid {
     display: flex;
@@ -31,5 +31,17 @@
 }
 
 h1 {
-    text-align: center;
+    position: fixed;
+    top: 50%;
+    float: right;
+}
+
+.leftSide {
+    position: fixed;
+    top: 25%;
+    margin-left: 20px;
+}
+
+form {
+    margin: 20px;
 }

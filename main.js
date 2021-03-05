@@ -1,5 +1,6 @@
 let grid = "";
 let highScore = 0;
+let currentScore = 0;
 const width = 40;
 const height = 40;
 for (let row = 1; row <= height; row++){
@@ -11,7 +12,7 @@ for (let row = 1; row <= height; row++){
 }
 document.getElementById("grid").innerHTML = grid;
 document.getElementById("highScore").innerHTML = "High Score: " + highScore;
-
+document.getElementById("currentScore").innerHTML = "Current Score: " + currentScore;
 //-----------------------------------------------------------------------------------------------------------------
 let difficultyHTML = document.getElementsByName("difficulty");
 let direction;
@@ -20,15 +21,22 @@ let snakeLength;
 let currentDot;
 let started = false;
 let engine;
-let speed = 200;
-let difficulty = .98;
+let speed;
+let difficulty;
+let paused = false
 
 
 document.addEventListener("keydown", (e)=>{
     if(!started && e.key === " "){
         checkDifficulty();
         init();
-    }
+    }/*else if(started && e.key === " " && !paused){
+        clearInterval(engine);
+        paused = true;
+    }else if(started && e.key === " " && paused){
+        setInterval(updateSnake, speed);
+        paused = false;
+    }*/
     if(direction !== "ArrowUp" && e.key === "ArrowDown"){
         direction = e.key;
     }else if(direction !== "ArrowRight" && e.key === "ArrowLeft"){
@@ -56,6 +64,7 @@ function init(){
     speed = 200;
     engine = setInterval(updateSnake, speed);
     started = true;
+    currentScore = 0;
 }
 //updateSnake();
 function updateSnake(){
@@ -128,6 +137,8 @@ function snakeGameOver(){
     }
 }
 function updateScore(){
+    currentScore = snakeLength;
+    document.getElementById("currentScore").innerHTML = "Current Score: " + currentScore;
     if (snakeLength > highScore){
         highScore = snakeLength;
         document.getElementById("highScore").innerHTML = "High Score: " + highScore;
